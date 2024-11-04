@@ -1,4 +1,4 @@
-//date: 10.28. edition:1.1
+//date: 11.04. edition:1.2
 //author: Meng lj & Liu yc 
 /*
 log:
@@ -85,9 +85,7 @@ void ReadAccount(){
 	fin.open(UserName+".ac");
 	finish[0]=1;
 	if(fin && !fin.eof()){
-		for(int i=0;i<=MaxLevel;i++){
-			fin>>finish[i];
-		}
+		fin.read(reinterpret_cast <char*>(finish),sizeof(finish));
 	}
 	fin.close();
 }
@@ -95,10 +93,7 @@ void ReadAccount(){
 void WriteAccount(){
 	ofstream fout;
 	fout.open(UserName+".ac");
-	for(int i=0;i<=MaxLevel;i++){
-		fout<<finish[i]<<" ";
-	}
-	fout<<endl;
+	fout.write(reinterpret_cast <char *>(finish),sizeof(finish));
 	fout.close();
 }
 
@@ -161,7 +156,6 @@ void Opening(){
 	char ch=getch();
     printf("Please input your username !\n:");
     cin>>UserName;
-	cout<<"aa00"<<endl;
     ReadAccount();
 }
 
