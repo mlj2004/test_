@@ -1,10 +1,12 @@
-//date: 11.04. edition:1.2
+//date: 11.05. edition:1.3
 //author: Meng lj & Liu yc 
 /*
 log:
+11.04
 更新了存档功能
 更新了一键通关
-
+11.05
+debug 通过oj
 */
 #include <iostream>
 #include <fstream>
@@ -537,7 +539,7 @@ int jump(int X){
 		return CurrentCodeLine;
 	}
 	//判断是否违法（num在程序之外）
-	CurrentCodeLine = CodeData[X];
+	CurrentCodeLine = X-1;//codedata[x] jump to anywhere
 	return 0;
 }
 
@@ -547,7 +549,7 @@ int jumpifzero(int X){
 	}
 	//判断是否违法（num在程序之外）
 	if(RobotNum == 0){
-		CurrentCodeLine = CodeData[X];
+		CurrentCodeLine = X-1;//codedata[x] jump to anywhere
 	}
 	return 0;
 }
@@ -565,41 +567,35 @@ int Solve(bool typ){
 		if(!GoodCode[CurrentCodeLine]){
 			return CurrentCodeLine;
 		}
-		//cout << CodeType[CurrentCodeLine];
+		//cout << CurrentCodeLine<<":";
 		if(CodeType[CurrentCodeLine] == 0){
 			if(InputLenth >= InBoxLenth[CurrentLevel]){
 				break;	//游戏结束
 			}
 			dictator = inbox();
 			//inbox();
-			RobotPos = 0;
 			if(typ)Refresh();
 		}
 		else if(CodeType[CurrentCodeLine] == 1){
 			//cout << "outbox" << endl;
 			dictator = outbox();
 			//outbox();
-			RobotPos = 7;
 			if(typ)Refresh();
 		}
 		else if(CodeType[CurrentCodeLine] == 2){
 			dictator = add(CodeData[CurrentCodeLine]);
-			RobotPos = CodeData[CurrentCodeLine];
 			if(typ)Refresh();
 		}
 		else if(CodeType[CurrentCodeLine] == 3 ){
 			dictator = sub(CodeData[CurrentCodeLine]);
-			RobotPos = CodeData[CurrentCodeLine];
 			if(typ)Refresh();
 		}
 		else if(CodeType[CurrentCodeLine] == 4 ){
 			dictator = copyto(CodeData[CurrentCodeLine]);
-			RobotPos = CodeData[CurrentCodeLine];
 			if(typ)Refresh();
 		}
 		else if(CodeType[CurrentCodeLine] == 5 ){
 			dictator = copyfrom(CodeData[CurrentCodeLine]);
-			RobotPos = CodeData[CurrentCodeLine];
 			if(typ)Refresh();
 		}
 		else if(CodeType[CurrentCodeLine] == 6 ){
@@ -613,6 +609,7 @@ int Solve(bool typ){
 		if(dictator != 0){
 			return dictator;//
 		}
+        //cout<<CurrentCodeLine<<" "<<RobotNum<<endl;
 	//检查outbox是否完全一致
 	}
 
@@ -625,8 +622,7 @@ int Solve(bool typ){
 		}
 	}
 	return -1;
-}//-----------------------------------------------------------------
-
+}
 //-----------------------------------------------------------------------------
 
 void Initialize(){
