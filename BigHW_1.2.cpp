@@ -43,12 +43,12 @@ int CodeLenth;//code start from 1
 int CodeType[1000];//normal type from 0 to 7, -1 for void code
 int CodeData[1000];
 int CurrentCodeLine;
-
+bool GoodCode[1000];
 int space[100];//space start from 0
 bool SpaceUsed[100];
 int RobotPos,RobotNum,RobotTyp;//0 for no number 1 for have number
 bool superkey;
-
+bool InGame;
 string UserName;
 LL read(){
 	LL x=0,k=1;char ch=getchar();
@@ -146,6 +146,7 @@ bool CheckInput(){
 	if(!AvailableCode[CurrentLevel][typ])return 0;
 	if(typ>=2 && !flag) return 0;
 	if(typ<=1 && flag)return 0;
+	GoodCode[CurrentCodeLine]=1;
 	CodeType[CurrentCodeLine]=typ;
 	CodeData[CurrentCodeLine]=dat;
 	return 1;
@@ -156,6 +157,7 @@ void Opening(){
 	char ch=getch();
     printf("Please input your username !\n:");
     cin>>UserName;
+	getchar();
     ReadAccount();
 }
 
@@ -374,6 +376,9 @@ void Refresh(){
 			screen[x+i][y+j]=' ';
 		}
 	}
+	if(InGame){
+		sleep(1);
+	}
 }
 
 int CodeInput(bool typ){
@@ -403,7 +408,7 @@ int CodeInput(bool typ){
 				}
 				CurrentCodeLine++;
 				CodeType[CurrentCodeLine]=-1;
-				Refresh();
+				Refresh(); 
 				if(!CheckInput()){
 					printf("input invalid ! (press 'Y' to continue)");
 					waituntil('y','y');
@@ -462,7 +467,6 @@ int CodeInput(bool typ){
 }
 //-----------------------------------------------------------------
 //0 for success -1 for fail x for Error on instruction x
-
 int inbox(){
 	RobotNum = CurrentInputSeq[InputLenth];
 	InputLenth += 1;
@@ -518,7 +522,7 @@ int copyto(int X){
 }
 
 int copyfrom(int X){
-	if(X > AvailableSpace[CurrentLevel] || X < 0 || SpaceUsed[X] == 0 || !AvailableCode[CurrentLevel][5]){
+	if(X > AvailableSpace[CurrentLevel]-1 || X < 0 || SpaceUsed[X] == 0 || !AvailableCode[CurrentLevel][5]){//
 		return CurrentCodeLine;
 	}
 	else{
@@ -558,6 +562,9 @@ int Solve(bool typ){
 	OutputLenth = 0;
 	int tr = 1;
 	for(CurrentCodeLine = 1; CurrentCodeLine <= CodeLenth; CurrentCodeLine++){
+		if(!GoodCode[CurrentCodeLine]){
+			return CurrentCodeLine;
+		}
 		//cout << CodeType[CurrentCodeLine];
 		if(CodeType[CurrentCodeLine] == 0){
 			if(InputLenth >= InBoxLenth[CurrentLevel]){
@@ -565,71 +572,46 @@ int Solve(bool typ){
 			}
 			dictator = inbox();
 			//inbox();
-			if(typ){
-				RobotPos=0;
-				Refresh();
-				sleep(1);
-			}
+			RobotPos = 0;
+			if(typ)Refresh();
 		}
 		else if(CodeType[CurrentCodeLine] == 1){
 			//cout << "outbox" << endl;
 			dictator = outbox();
 			//outbox();
-			if(typ){
-				RobotPos=7;
-				Refresh();
-				sleep(1);
-			}
+			RobotPos = 7;
+			if(typ)Refresh();
 		}
 		else if(CodeType[CurrentCodeLine] == 2){
 			dictator = add(CodeData[CurrentCodeLine]);
-			if(typ){
-				RobotPos=CodeData[CurrentCodeLine];
-				Refresh();
-				sleep(1);
-			}
+			RobotPos = CodeData[CurrentCodeLine];
+			if(typ)Refresh();
 		}
 		else if(CodeType[CurrentCodeLine] == 3 ){
 			dictator = sub(CodeData[CurrentCodeLine]);
-			if(typ){
-				RobotPos=CodeData[CurrentCodeLine];
-				Refresh();
-				sleep(1);
-			}
+			RobotPos = CodeData[CurrentCodeLine];
+			if(typ)Refresh();
 		}
 		else if(CodeType[CurrentCodeLine] == 4 ){
 			dictator = copyto(CodeData[CurrentCodeLine]);
-			if(typ){
-				RobotPos=CodeData[CurrentCodeLine];
-				Refresh();
-				sleep(1);
-			}
+			RobotPos = CodeData[CurrentCodeLine];
+			if(typ)Refresh();
 		}
 		else if(CodeType[CurrentCodeLine] == 5 ){
 			dictator = copyfrom(CodeData[CurrentCodeLine]);
-			if(typ){
-				RobotPos=CodeData[CurrentCodeLine];
-				Refresh();
-				sleep(1);
-			}
+			RobotPos = CodeData[CurrentCodeLine];
+			if(typ)Refresh();
 		}
 		else if(CodeType[CurrentCodeLine] == 6 ){
 			dictator = jump(CodeData[CurrentCodeLine]);
-			if(typ){
-				Refresh();
-				sleep(1);
-			}
+			if(typ)Refresh();
 		}
 		else if(CodeType[CurrentCodeLine] == 7 ){
 			dictator = jumpifzero(CodeData[CurrentCodeLine]);
-			if(typ){
-				Refresh();
-				sleep(1);
-			}
+			if(typ)Refresh();
 		}
 		if(dictator != 0){
-            
-			return CurrentCodeLine;//modified by mlj /10_28
+			return dictator;//
 		}
 	//检查outbox是否完全一致
 	}
@@ -639,13 +621,14 @@ int Solve(bool typ){
 			tr *= (OutBoxseq[CurrentLevel][i] == CurrentOutputSeq[i]);
 		}
 		if (tr == 1){
-            
 			return 0;
 		}
 	}
 	return -1;
-}
-//-----------------------------------------------------------------
+}//-----------------------------------------------------------------
+
+//-----------------------------------------------------------------------------
+
 void Initialize(){
 	Info[1]=		"this is level one! Let the robot take out each box from the   |Coding instructions: Use up and down arrows to select a|\n"
 					"input sequence and put it into the output sequence            |line. Press 'C' to change the current code,'A' to add a|\n"
@@ -705,14 +688,8 @@ void Initialize(){
 	InBoxseq[3][5]=3;
 	InBoxseq[3][6]=-3;
 	InBoxseq[3][7]=-3;
-	OutBoxseq[2][0]=-6;
-	OutBoxseq[2][1]=6;
-	OutBoxseq[2][2]=4;
-	OutBoxseq[2][3]=-4;
-	OutBoxseq[2][4]=0;
-	OutBoxseq[2][5]=0;
-	OutBoxseq[2][6]=18;
-	OutBoxseq[2][7]=-18;
+	OutBoxseq[3][0]=7;
+	OutBoxseq[3][1]=-1;
 	AvailableSpace[3]=3;
 	AvailableCode[3][0]=7;
 	AvailableCode[3][1]=-3;
@@ -787,10 +764,12 @@ void MainGame(){
 		LevelInitialize(CurrentLevel,0);
 		Refresh();
 		if(CodeInput(1))break;
+		InGame=1;
 		if(superkey==0)
 			s=Solve(1);
 		else
 			s=0;
+		InGame=0;
 		if(s==0){
 			printf("Success ! (press 'q' return to index)\n");
 			finish[CurrentLevel]=1;
@@ -828,3 +807,5 @@ int main()
   [_]
   d b
 */
+
+ 
