@@ -1,4 +1,4 @@
-//date: 10.14. edition: 0.1
+//date: 11.5. edition: 1.2
 //author: Liu yc
 #include <iostream>
 #include <algorithm>
