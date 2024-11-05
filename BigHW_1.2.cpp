@@ -1,7 +1,7 @@
 //date: 11.04. edition:1.2
 //author: Meng lj & Liu yc 
 /*
-log:
+log:thisiswhereIedit the code
 更新了存档功能
 更新了一键通关
 
