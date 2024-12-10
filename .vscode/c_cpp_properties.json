@@ -1,0 +1,20 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "${workspaceFolder}/**"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "compilerPath": "D:\\vscode_portable\\MinGW64\\bin\\gcc.exe",//只需要把E:\\C++改成自己代码的工作路径即可
+            "cStandard": "c17",
+            "intelliSenseMode": "windows-gcc-x64",
+            "cppStandard": "c++17"
+        }
+    ],
+    "version": 4
+}

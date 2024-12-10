@@ -1,0 +1,55 @@
+this is level one! Let the robot take out each box from the   |Coding instructions: Use up and down arrows to select a|
+input sequence and put it into the output sequence            |line. Press 'C' to change the current code,'A' to add a|
+                                                              |new line, 'D' to delet the code, "Enter" to confirm    |
+                                                              |your new code. Press 'S' to start the robot!           |
+(press 'H' for help,press Esc to quit)                        |                                                       |
+2
+1 2
+2
+1 2
+0
+1 1 0 0 0 0 0 0
+this is level two! For every two boxes in the input sequence, |Coding instructions: Use up and down arrows to select a|
+subtract the second from the first and place the result in the|line. Press 'C' to change the current code,'A' to add a|
+output sequence. Then subtract the first from the second and  |new line, 'D' to delet the code, "Enter" to confirm    |
+place the result in the output sequence. Repeat this process. |your new code. Press 'S' to start the robot!           |
+(press 'H' for help,press Esc to quit)                        |                                                       |
+8
+3 9 5 1 -2 -2 9 -9
+8
+-6 6 4 -4 0 0 18 -18
+3
+1 1 1 1 1 1 1 1
+this is level three! Take two numbers from the input belt in  |Coding instructions: Use up and down arrows to select a|
+sequence. If they are equal, output one of them; otherwise,   |line. Press 'C' to change the current code,'A' to add a|
+discard it. Repeat this process until the input belt is empty.|new line, 'D' to delet the code, "Enter" to confirm    |
+                                                              |your new code. Press 'S' to start the robot!           |
+(press 'H' for help,press Esc to quit)                        |                                                       |
+8
+6 2 7 7 -9 3 -3 -3
+2
+7 -3
+3
+1 1 1 1 1 1 1 1
+this is level four! Let the robot take out each box from the  |Coding instructions: Use up and down arrows to select a|
+input sequence and put it into the output sequence            |line. Press 'C' to change the current code,'A' to add a|
+                                                              |new line, 'D' to delet the code, "Enter" to confirm    |
+                                                              |your new code. Press 'S' to start the robot!           |
+(press 'H' for help,press Esc to quit)                        |                                                       |
+2
+1 2
+2
+1 2
+0
+1 1 0 0 0 0 0 0
+this is level five! Let the robot take out each box from the  |Coding instructions: Use up and down arrows to select a|
+input sequence and put it into the output sequence            |line. Press 'C' to change the current code,'A' to add a|
+                                                              |new line, 'D' to delet the code, "Enter" to confirm    |
+                                                              |your new code. Press 'S' to start the robot!           |
+(press 'H' for help,press Esc to quit)                        |                                                       |
+2
+1 2
+2
+1 2
+0
+1 1 0 0 0 0 0 0
