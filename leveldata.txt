@@ -9,6 +9,7 @@ input sequence and put it into the output sequence            |line. Press 'C' t
 1 2
 0
 1 1 0 0 0 0 0 0
+4 4
 this is level two! For every two boxes in the input sequence, |Coding instructions: Use up and down arrows to select a|
 subtract the second from the first and place the result in the|line. Press 'C' to change the current code,'A' to add a|
 output sequence. Then subtract the first from the second and  |new line, 'D' to delet the code, "Enter" to confirm    |
@@ -20,6 +21,7 @@ place the result in the output sequence. Repeat this process. |your new code. Pr
 -6 6 4 -4 0 0 18 -18
 3
 1 1 1 1 1 1 1 1
+10 10
 this is level three! Take two numbers from the input belt in  |Coding instructions: Use up and down arrows to select a|
 sequence. If they are equal, output one of them; otherwise,   |line. Press 'C' to change the current code,'A' to add a|
 discard it. Repeat this process until the input belt is empty.|new line, 'D' to delet the code, "Enter" to confirm    |
@@ -31,6 +33,7 @@ discard it. Repeat this process until the input belt is empty.|new line, 'D' to 
 7 -3
 3
 1 1 1 1 1 1 1 1
+10 10
 this is level four! Let the robot take out each box from the  |Coding instructions: Use up and down arrows to select a|
 input sequence and put it into the output sequence            |line. Press 'C' to change the current code,'A' to add a|
                                                               |new line, 'D' to delet the code, "Enter" to confirm    |
@@ -42,6 +45,7 @@ input sequence and put it into the output sequence            |line. Press 'C' t
 1 2
 0
 1 1 0 0 0 0 0 0
+10 10
 this is level five! Let the robot take out each box from the  |Coding instructions: Use up and down arrows to select a|
 input sequence and put it into the output sequence            |line. Press 'C' to change the current code,'A' to add a|
                                                               |new line, 'D' to delet the code, "Enter" to confirm    |
@@ -53,3 +57,4 @@ input sequence and put it into the output sequence            |line. Press 'C' t
 1 2
 0
 1 1 0 0 0 0 0 0
+10 10

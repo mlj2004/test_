@@ -38,6 +38,7 @@ int InBoxseq[10][100];
 int OutBoxseq[10][100];
 int AvailableSpace[10];
 bool AvailableCode[10][8];
+int StandardLenth[10][2];
 //gamedata
 int CurrentLevel=1;
 int CurrentInputSeq[100],InputLenth;//input strat from 0
@@ -449,17 +450,19 @@ int CodeInput(bool typ){
 				Refresh();
 			}
 			//-----------------------
-			if(ch=='r'){
-				RobotPos++;
-				Refresh();
-			}
-			if(ch=='e'){
-				RobotPos--;
-				Refresh();
-			}
-			if(ch=='k'){
-				superkey = 1;
-				return 0;
+			if(UserName == "JIE_GE"){
+				if(ch=='r'){
+					RobotPos++;
+					Refresh();
+				}
+				if(ch=='e'){
+					RobotPos--;
+					Refresh();
+				}
+				if(ch=='k'){
+					superkey = 1;
+					return 0;
+				}
 			}
 			//-----------------------
 			if(ch==-32){
@@ -642,11 +645,28 @@ int Solve(bool typ){
 }
 //-----------------------------------------------------------------------------
 
+double scounter(double x,double y){
+	double k=y/x-1;
+	return pow(0.5,k);
+}
+
 int scorecounter(){
-	int ans=100-CodeLenth-StepCounter;
-	printf("CODE LENGTH: %03d \n",CodeLenth);
-	printf("RUNNING STEP: %03d \n",StepCounter);
-	printf("TOTALL SCORE: %03d \n",ans);
+	system("cls");
+	ifstream fin;
+	fin.open("success.txt");
+	string s;
+	while(!fin.eof()){
+		getline(fin,s);
+		cout<<s<<endl;
+	}
+	int s1=40*scounter(StandardLenth[CurrentLevel][0],CodeLenth);
+	int s2=60*scounter(StandardLenth[CurrentLevel][1],StepCounter);
+	int ans=s1+s2;
+	printf("               your ans | standard | score\n");
+	printf("CODE LENGTH :    %03d        %03d       %03d\n",CodeLenth,StandardLenth[CurrentLevel][0],s1);
+	printf("RUNNING STEP:    %03d        %03d       %03d\n",StepCounter,StandardLenth[CurrentLevel][1],s2);
+	printf("-------------------------------------------------\n");
+	printf("TOTALL SCORE:    %03d \n",ans);
 	return ans;
 }
 
@@ -667,6 +687,7 @@ void Initialize(){
 		for(int i=0;i<OutBoxLenth[t];i++)fin>>OutBoxseq[t][i];
 		fin>>AvailableSpace[t];
 		for(int i=0;i<8;i++)fin>>AvailableCode[t][i];
+		fin>>StandardLenth[t][0]>>StandardLenth[t][1];
 		fin.get();
 		t++;	
 	}
@@ -739,8 +760,8 @@ void MainGame(){
 			s=0;
 		InGame=0;
 		if(s==0){
-			printf("Success ! (press 'q' return to index)\n");
-			score[CurrentLevel]=scorecounter();
+			//printf("Success ! (press 'q' return to index)\n");
+			score[CurrentLevel]=max(score[CurrentLevel],scorecounter());
 			finish[CurrentLevel]=1;
 			char ch=waituntil('q',27);
 			break;
