@@ -8,6 +8,13 @@ log:
 11.05
 debug 通过oj
 12.9. 
+12.16.
+更新了胜利界面和计分方式
+移除了金手指
+12.19.
+修复了读入bug
+增加了第4第5关
+将使用空间加入计分
 */
 #include <iostream>
 #include <fstream>
@@ -38,7 +45,7 @@ int InBoxseq[10][100];
 int OutBoxseq[10][100];
 int AvailableSpace[10];
 bool AvailableCode[10][8];
-int StandardLenth[10][2];
+int StandardLenth[10][3];
 //gamedata
 int CurrentLevel=1;
 int CurrentInputSeq[100],InputLenth;//input strat from 0
@@ -55,7 +62,7 @@ int RobotPos,RobotNum,RobotTyp;//0 for no number 1 for have number
 bool superkey;
 bool InGame;
 string UserName;
-int StepCounter;
+int StepCounter,SpaceCounter;
 
 LL read(){
 	LL x=0,k=1;char ch=getchar();
@@ -65,16 +72,32 @@ LL read(){
 }
 
 string NumberShifter(int a){
-	if(a>=100 || a<=-100)return "Inf";
+	if(a>=1000 || a<=-100)return "Big";
 	string ans="";
-	if(a<0)ans+="-",a=-a;
-	else ans+=" ";
-	if(a<10){
-		ans+=char(a+'0');
-		ans+=" ";
+	if(a<0){
+		ans+="-";
+		a=-a;
+		if(a<10){
+			ans+=char(a+'0');
+			ans+=" ";
+		}else if(a<100){
+			ans+=char(a/10+'0');
+			ans+=char(a%10+'0');
+		}
 	}else{
-		ans+=char(a/10+'0');
-		ans+=char(a%10+'0');
+		if(a<10){
+			ans+=" ";
+			ans+=char(a+'0');
+			ans+=" ";
+		}else if(a<100){
+			ans+=" ";
+			ans+=char(a/10+'0');
+			ans+=char(a%10+'0');
+		}else{
+			ans+=char(a/100+'0');
+			ans+=char((a/10)%10+'0');
+			ans+=char(a%10+'0');
+		}
 	}
 	return ans;
 }
@@ -252,45 +275,13 @@ int Index(){
 
 void HelpPage(){
 	system("cls");
-	printf("                                       __  __   ______   __        ______   __                                          \n");
-	printf("                                      / / / /  / ____/  / /       / __  /  / /                                          \n");
-	printf("                                     / /_/ /  / /___   / /       / /_/ /  / /                                           \n");
-	printf("                                    / __  /  / ____/  / /       / ____/  /_/                                            \n");
-	printf("                                   / / / /  / /___   / /____   / /      __                                              \n");
-	printf("                                  /_/ /_/  /_____/  /______/  /_/      /_/     (press 'H' to return )                   \n");
-	printf(" *---------------------------------------------------------------------------------------------------------------------*\n");
-	printf(" | Welcome! In this game you are going control a robot in Xiaoming's room to fulfill several tasks. there are two belts|\n");
-	printf(" | and some empty spaces in Xiaoming's room. One is Input belt, where you can get sequenced boxes with number on it.   |\n");
-	printf(" | The robot can do several operations on these boxes and put it to the Output belt. Xiaoming will check the boxes on  |\n");
-	printf(" | the Output belt to judge your correctness.operations you can do are as follow.                                      |\n");
-	printf(" |---------------------------------------------------------------------------------------------------------------------|\n");
-	printf(" |  name  |parameter|                                           explanation                                            |\n");
-	printf(" |--------*------------------------------------------------------------------------------------------------------------|\n");
-	printf(" | inbox  |    No   |The robot picks up the first box from the input belt, which becomes the current box (discard      |\n");
-	printf(" |        |         |previous box.The game ends when there are no more boxes on the input belt.                        |\n");
-	printf(" |--------*------------------------------------------------------------------------------------------------------------|\n");
-	printf(" | outbox |    No   |The robot places the current box on the output belt. (no longer has the current box.)             |\n");
-	printf(" |        |         |(FAILS when there is no current box.)                                                             |\n");
-	printf(" |--------*------------------------------------------------------------------------------------------------------------|\n");
-	printf(" |  add   |    X    |Add the number at position X to the number on the current box. The box at position X remains      |\n");
-	printf(" |        |         |unchanged (FAILS when There is no current box or There is no block at position X.)                |\n");
-	printf(" |--------*------------------------------------------------------------------------------------------------------------|\n");
-	printf(" |  sub   |    X    |Subtract the number at position X from the number on current box. The box at position X remains   |\n");
-	printf(" |        |         |unchanged (FAILS when There is no current box or There is no block at position X.)                |\n");
-	printf(" |--------*------------------------------------------------------------------------------------------------------------|\n");
-	printf(" | copyto |    X    |Copy the current box to position X. If there is a box at position X, the original box is discarded|\n");
-	printf(" |        |         |(FAILS when There is no current block or Position X does not exist.)                              |\n");
-	printf(" |--------*------------------------------------------------------------------------------------------------------------|\n");
-	printf(" |copyfrom|    X    |Copy the box from position X to the current box, i.e. replace the current box with the box at     |\n");
-	printf(" |        |         |position X and discard original current block. (FAILS when There is no block at that position X   |\n");
-	printf(" |--------*------------------------------------------------------------------------------------------------------------|\n");
-	printf(" |  jump  |    X    |Change the robot's program sequence to start executing from the Xth instruction.                  |\n");
-	printf(" |        |         |(FAILS when The Xth instruction does not exist.)                                                  |\n");
-	printf(" |--------*------------------------------------------------------------------------------------------------------------|\n");
-	printf(" |        |         |If the current block is 0, change the robot's program sequence to start executing from the Xth    |\n");
-	printf(" | jumpif-|    X    |instruction. If the current block is not 0, do nothing.(FAILS when The Xth instruction does not   |\n");
-	printf(" |  zero  |         |exist or There is no current block)                                                               |\n");
-	printf(" |--------*------------------------------------------------------------------------------------------------------------|\n");
+	ifstream fin;
+	fin.open("./source/help.txt");
+	string s;
+	while(!fin.eof()){
+		getline(fin,s);
+		cout<<s<<endl;
+	};	
 	waituntil('h',27);
 	return ;
 }
@@ -415,11 +406,12 @@ int CodeInput(bool typ){
 			}
 			if(ch=='a'){
 				CodeLenth++;
-				for(int i=CodeLenth-1;i>=CurrentCodeLine;i--){
+				for(int i=CodeLenth-1;i>CurrentCodeLine;i--){
 					CodeData[i+1]=CodeData[i];
 					CodeType[i+1]=CodeType[i];
 				}
 				CurrentCodeLine++;
+				GoodCode[CodeLenth]=1;
 				CodeType[CurrentCodeLine]=-1;
 				Refresh(); 
 				if(!CheckInput()){
@@ -646,6 +638,7 @@ int Solve(bool typ){
 //-----------------------------------------------------------------------------
 
 double scounter(double x,double y){
+	if(x==0)return 1;
 	double k=y/x-1;
 	return pow(0.5,k);
 }
@@ -653,18 +646,24 @@ double scounter(double x,double y){
 int scorecounter(){
 	system("cls");
 	ifstream fin;
-	fin.open("success.txt");
+	fin.open("./source/success.txt");
 	string s;
 	while(!fin.eof()){
 		getline(fin,s);
 		cout<<s<<endl;
 	}
+	SpaceCounter = 0;
+	for(int i=0;i<AvailableSpace[CurrentLevel];i++){
+		if(SpaceUsed[i])SpaceCounter++;
+	}
 	int s1=40*scounter(StandardLenth[CurrentLevel][0],CodeLenth);
-	int s2=60*scounter(StandardLenth[CurrentLevel][1],StepCounter);
-	int ans=s1+s2;
+	int s2=40*scounter(StandardLenth[CurrentLevel][1],StepCounter);
+	int s3=20*scounter(StandardLenth[CurrentLevel][2],SpaceCounter);
+	int ans=s1+s2+s3;
 	printf("               your ans | standard | score\n");
 	printf("CODE LENGTH :    %03d        %03d       %03d\n",CodeLenth,StandardLenth[CurrentLevel][0],s1);
 	printf("RUNNING STEP:    %03d        %03d       %03d\n",StepCounter,StandardLenth[CurrentLevel][1],s2);
+	printf("SPACE USING :    %03d        %03d       %03d\n",SpaceCounter,StandardLenth[CurrentLevel][2],s3);
 	printf("-------------------------------------------------\n");
 	printf("TOTALL SCORE:    %03d \n",ans);
 	return ans;
@@ -672,7 +671,7 @@ int scorecounter(){
 
 void Initialize(){
 	ifstream fin;
-	fin.open("leveldata.txt",ios::in);
+	fin.open("./source/leveldata.txt",ios::in);
 	int t=1;
 	while(!fin.eof()){
 	string str;
@@ -687,7 +686,7 @@ void Initialize(){
 		for(int i=0;i<OutBoxLenth[t];i++)fin>>OutBoxseq[t][i];
 		fin>>AvailableSpace[t];
 		for(int i=0;i<8;i++)fin>>AvailableCode[t][i];
-		fin>>StandardLenth[t][0]>>StandardLenth[t][1];
+		fin>>StandardLenth[t][0]>>StandardLenth[t][1]>>StandardLenth[t][2];
 		fin.get();
 		t++;	
 	}

@@ -9,7 +9,7 @@ input sequence and put it into the output sequence            |line. Press 'C' t
 1 2
 0
 1 1 0 0 0 0 0 0
-4 4
+4 4 0
 this is level two! For every two boxes in the input sequence, |Coding instructions: Use up and down arrows to select a|
 subtract the second from the first and place the result in the|line. Press 'C' to change the current code,'A' to add a|
 output sequence. Then subtract the first from the second and  |new line, 'D' to delet the code, "Enter" to confirm    |
@@ -21,7 +21,7 @@ place the result in the output sequence. Repeat this process. |your new code. Pr
 -6 6 4 -4 0 0 18 -18
 3
 1 1 1 1 1 1 1 1
-10 10
+12 50 2
 this is level three! Take two numbers from the input belt in  |Coding instructions: Use up and down arrows to select a|
 sequence. If they are equal, output one of them; otherwise,   |line. Press 'C' to change the current code,'A' to add a|
 discard it. Repeat this process until the input belt is empty.|new line, 'D' to delet the code, "Enter" to confirm    |
@@ -33,28 +33,28 @@ discard it. Repeat this process until the input belt is empty.|new line, 'D' to 
 7 -3
 3
 1 1 1 1 1 1 1 1
-10 10
-this is level four! Let the robot take out each box from the  |Coding instructions: Use up and down arrows to select a|
-input sequence and put it into the output sequence            |line. Press 'C' to change the current code,'A' to add a|
-                                                              |new line, 'D' to delet the code, "Enter" to confirm    |
+10 30 1
+this is level four! the input will be an ordered sequence but |Coding instructions: Use up and down arrows to select a|
+with repeated elements. your robot should remove the repeated |line. Press 'C' to change the current code,'A' to add a|
+and remain the others.                                        |new line, 'D' to delet the code, "Enter" to confirm    |
+(eg. input: 1 2 2 3 4, output: 1 2 3 4)                       |your new code. Press 'S' to start the robot!           |
+(press 'H' for help,press Esc to quit)                        |                                                       |
+20
+-3 0 1 1 1 2 3 3 3 3 4 5 5 6 7 7 9 10 11 13
+13
+-3 0 1 2 3 4 5 6 7 9 10 11 13
+16
+1 1 1 1 1 1 1 1
+12 130 2
+this is level five! you are going to make a exaggerater that  |Coding instructions: Use up and down arrows to select a|
+multiplies every input by 40 and output the outcome.          |line. Press 'C' to change the current code,'A' to add a|
+(eg. if the input is 3, your output should be 3 * 40 = 120)   |new line, 'D' to delet the code, "Enter" to confirm    |
                                                               |your new code. Press 'S' to start the robot!           |
 (press 'H' for help,press Esc to quit)                        |                                                       |
-2
-1 2
-2
-1 2
-0
-1 1 0 0 0 0 0 0
-10 10
-this is level five! Let the robot take out each box from the  |Coding instructions: Use up and down arrows to select a|
-input sequence and put it into the output sequence            |line. Press 'C' to change the current code,'A' to add a|
-                                                              |new line, 'D' to delet the code, "Enter" to confirm    |
-                                                              |your new code. Press 'S' to start the robot!           |
-(press 'H' for help,press Esc to quit)                        |                                                       |
-2
-1 2
-2
-1 2
-0
-1 1 0 0 0 0 0 0
-10 10
+6
+1 21 15 13 7 23 
+6
+40 840 600 520 280 920
+6
+1 1 1 1 1 1 1 1
+15 90 2

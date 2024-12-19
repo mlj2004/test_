@@ -1,0 +1,39 @@
+                                       __  __   ______   __        ______   __
+                                      / / / /  / ____/  / /       / __  /  / /
+                                     / /_/ /  / /___   / /       / /_/ /  / /
+                                    / __  /  / ____/  / /       / ____/  /_/
+                                   / / / /  / /___   / /____   / /      __
+                                  /_/ /_/  /_____/  /______/  /_/      /_/     (press 'H' to return )
+ *---------------------------------------------------------------------------------------------------------------------*
+ | Welcome! In this game you are going control a robot in Xiaoming's room to fulfill several tasks. there are two belts|
+ | and some empty spaces in Xiaoming's room. One is Input belt, where you can get sequenced boxes with number on it.   |
+ | The robot can do several operations on these boxes and put it to the Output belt. Xiaoming will check the boxes on  |
+ | the Output belt to judge your correctness.operations you can do are as follow.                                      |
+ |---------------------------------------------------------------------------------------------------------------------|
+ |  name  |parameter|                                           explanation                                            |
+ |--------*------------------------------------------------------------------------------------------------------------|
+ | inbox  |    No   |The robot picks up the first box from the input belt, which becomes the current box (discard      |
+ |        |         |previous box.The game ends when there are no more boxes on the input belt.                        |
+ |--------*------------------------------------------------------------------------------------------------------------|
+ | outbox |    No   |The robot places the current box on the output belt. (no longer has the current box.)             |
+ |        |         |(FAILS when there is no current box.)                                                             |
+ |--------*------------------------------------------------------------------------------------------------------------|
+ |  add   |    X    |Add the number at position X to the number on the current box. The box at position X remains      |
+ |        |         |unchanged (FAILS when There is no current box or There is no block at position X.)                |
+ |--------*------------------------------------------------------------------------------------------------------------|
+ |  sub   |    X    |Subtract the number at position X from the number on current box. The box at position X remains   |
+ |        |         |unchanged (FAILS when There is no current box or There is no block at position X.)                |
+ |--------*------------------------------------------------------------------------------------------------------------|
+ | copyto |    X    |Copy the current box to position X. If there is a box at position X, the original box is discarded|
+ |        |         |(FAILS when There is no current block or Position X does not exist.)                              |
+ |--------*------------------------------------------------------------------------------------------------------------|
+ |copyfrom|    X    |Copy the box from position X to the current box, i.e. replace the current box with the box at     |
+ |        |         |position X and discard original current block. (FAILS when There is no block at that position X   |
+ |--------*------------------------------------------------------------------------------------------------------------|
+ |  jump  |    X    |Change the robot's program sequence to start executing from the Xth instruction.                  |
+ |        |         |(FAILS when The Xth instruction does not exist.)                                                  |
+ |--------*------------------------------------------------------------------------------------------------------------|
+ |        |         |If the current block is 0, change the robot's program sequence to start executing from the Xth    |
+ | jumpif-|    X    |instruction. If the current block is not 0, do nothing.(FAILS when The Xth instruction does not   |
+ |  zero  |         |exist or There is no current block)                                                               |
+ |--------*------------------------------------------------------------------------------------------------------------|
