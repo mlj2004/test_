@@ -15,6 +15,9 @@ debug 通过oj
 修复了读入bug
 增加了第4第5关
 将使用空间加入计分
+12.21.
+加入彩蛋皮肤
+更新了jump 的显示方式，不会鬼畜了
 */
 #include <iostream>
 #include <fstream>
@@ -191,6 +194,22 @@ void Opening(){
     cin>>UserName;
 	getchar();
     ReadAccount();
+	if(UserName == "TREE"){
+		robot[0]="  /*\\  ";
+		robot[1]=" /   \\ ";
+		robot[2]=" /___\\ ";
+		robot[3]="/_____\\";
+		robot[4]="  | |* ";
+		robot[5]="  |_|  ";
+	}
+	if(UserName == "BANANA"){
+		robot[0]="       ";
+		robot[1]="       ";
+		robot[2]="====   ";
+		robot[3]="/ \\    ";
+		robot[4]="|  \\__#";
+		robot[5]=" \\___/ ";
+	}
 }
 
 int Index(){
@@ -612,12 +631,12 @@ int Solve(bool typ){
 			if(typ)Refresh();
 		}
 		else if(CodeType[CurrentCodeLine] == 6 ){
-			dictator = jump(CodeData[CurrentCodeLine]);
 			if(typ)Refresh();
+			dictator = jump(CodeData[CurrentCodeLine]);
 		}
 		else if(CodeType[CurrentCodeLine] == 7 ){
-			dictator = jumpifzero(CodeData[CurrentCodeLine]);
 			if(typ)Refresh();
+			dictator = jumpifzero(CodeData[CurrentCodeLine]);
 		}
 		if(dictator != 0){
 			return dictator;//
@@ -716,12 +735,19 @@ void Initialize(){
 	screen[22] =	"   |   |                                              |   |   ";
 	screen[23] =	"   *---*                                              *---*   ";
 	screen[24] =	"                                                              ";
-	robot[0]=" *---* ";
-	robot[1]=" |   | ";
+	robot[0]=" *---*  ";
+	robot[1]=" |   |  ";
 	robot[2]="[*---*]";
 	robot[3]="\\[0_0]/";
-	robot[4]="  [_]  ";
-	robot[5]="  d b  ";
+	robot[4]="  [_] ";
+	robot[5]="  d b ";
+	/*
+  /*\
+ /123\
+ /___\
+/_____\
+  | |
+	*/
 }
 
 void LevelInitialize(int lv,bool typ){
@@ -796,6 +822,33 @@ int main()
   [_]
   d b
 
+
+
+ 123
+====
+/ \
+|  \__.
+ \___/
+
+  /*\
+ /123\
+ /___\
+/_____\
+  | |*
+* |_|
+
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⣿⣿⣿⣿⡿⢋⣩⣭⣶⣶⣮⣭⡙⠿⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⣿⣿⠿⣋⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⡙⢿⣿⣿⣿
+⣿⣿⣿⣿⣿⡃⠄⠹⡿⣿⣿⣿⣿⠟⠛⣿⣿⣿⣿⣷⡌⢿⣿⣿
+⣿⣿⣿⣿⣿⠐⣠⡶⣶⣲⡎⢻⣿⣤⣴⣾⣿⣿⣿⣿⣿⠸⣿⣿
+⣿⠟⣋⡥⡶⣞⡯⣟⣾⣺⢽⡧⣥⣭⣉⢻⣿⣿⣿⣿⣿⣆⢻⣿
+⡃⣾⢯⢿⢽⣫⡯⣷⣳⢯⡯⠯⠷⠻⠞⣼⣿⣿⣿⣿⣿⣿⡌⣿
+⣦⣍⡙⠫⠛⠕⣋⡓⠭⣡⢶⠗⣡⣶⡝⣿⣿⣿⣿⣿⣿⣿⣧⢹
+⣿⣿⣿⣿⣿⣿⣘⣛⣋⣡⣵⣾⣿⣿⣿⢸⣿⣿⣿⣿⣿⣿⣿⢸
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢸⣿⣿⣿⣿⣿⣿⣿⢸
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢸⣿⣿⣿⣿⣿⣿⣿⢸ 
 */
 
  
