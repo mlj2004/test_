@@ -66,7 +66,7 @@ bool superkey;
 bool InGame;
 string UserName;
 int StepCounter,SpaceCounter;
-
+ifstream fin;
 LL read(){
 	LL x=0,k=1;char ch=getchar();
 	while('0'>ch || ch >'9'){if(ch=='-')k=-1;ch=getchar();}
@@ -114,7 +114,6 @@ char waituntil(char c1,char c2){
 }
 
 void ReadAccount(){
-    ifstream fin;
 	fin.open("./account/"+UserName+".ac");
 	finish[0]=1;
 	if(fin && !fin.eof()){
@@ -132,9 +131,14 @@ void WriteAccount(){
 	fout.close();
 }
 
-bool CheckInput(){
+bool CheckInput(bool type){
 	string ss;
-	getline(cin,ss);
+	if(type)
+		getline(fin,ss);
+	else 
+		getline(cin,ss);
+	GoodCode[CurrentCodeLine] = 0;
+	CodeType[CurrentCodeLine] = -2;
 	int l=ss.length(),typ=-1,dat=0,k=1;
 	string s="";
 	bool flag=0;
@@ -309,7 +313,6 @@ int Index(){
 
 void HelpPage(){
 	system("cls");
-	ifstream fin;
 	fin.open("./source/help.txt");
 	string s;
 	while(!fin.eof()){
@@ -370,40 +373,49 @@ void Refresh(){
 		screen[x+1][y+2+j]=s[j];
 	}
 	//print
-	int l=max(CodeLenth,23);
+	int l=23;
+	int r=0;
+	if(CodeLenth > l){
+		if(CurrentCodeLine >= 12){
+			r=min(CurrentCodeLine -12,CodeLenth -23);
+		}
+	}
 	for(int i=0;i<=l;i++){
 		printf("%s|\t",screen[min(i,24)].c_str());
 		if(i==0)printf("## ---- CODE: ---- ##\n");
 		else if(i<=CodeLenth){
-			if(CurrentCodeLine==i)printf(">");
+			if(CurrentCodeLine==i+r)printf(">");
 			else printf(" ");
-			printf("%2d:",i);
-			if(CodeType[i]==0){
+			printf("%2d:",i+r);
+			if(CodeType[i+r]==0){
 				printf("inbox\n");
 			}
-			if(CodeType[i]==1){
+			if(CodeType[i+r]==1){
 				printf("outbox\n");
 			}
-			if(CodeType[i]==2){
+			if(CodeType[i+r]==2){
 				printf("add %d\n",CodeData[i]);
 			}
-			if(CodeType[i]==3){
+			if(CodeType[i+r]==3){
 				printf("sub %d\n",CodeData[i]);
 			}
-			if(CodeType[i]==4){
+			if(CodeType[i+r]==4){
 				printf("copyto %d\n",CodeData[i]);
 			}
-			if(CodeType[i]==5){
+			if(CodeType[i+r]==5){
 				printf("copyfrom %d\n",CodeData[i]);
 			}
-			if(CodeType[i]==6){
+			if(CodeType[i+r]==6){
 				printf("jump %d\n",CodeData[i]);
 			}
-			if(CodeType[i]==7){
+			if(CodeType[i+r]==7){
 				printf("jumpifzero %d\n",CodeData[i]);
 			}
-			if(CodeType[i]==-1){
+			if(CodeType[i+r]==-1){
 				printf("\n");
+			}
+			if(CodeType[i+r]==-2){
+				printf("something wrong\n");
 			}
 		}else{
 			printf("\n");
@@ -429,7 +441,7 @@ int CodeInput(bool typ){
 				int tmp = CodeType[CurrentCodeLine];
 				CodeType[CurrentCodeLine]=-1;
 				Refresh();
-				if(!CheckInput()){
+				if(!CheckInput(0)){
 					CodeType[CurrentCodeLine]=tmp;
 					printf("input invalid ! (press 'Y' to continue)");
 					waituntil('y','y');
@@ -448,7 +460,7 @@ int CodeInput(bool typ){
 				GoodCode[CodeLenth]=1;
 				CodeType[CurrentCodeLine]=-1;
 				Refresh(); 
-				if(!CheckInput()){
+				if(!CheckInput(0)){
 					printf("input invalid ! (press 'Y' to continue)");
 					waituntil('y','y');
 					for(int i=CurrentCodeLine+1;i<=CodeLenth;i++){
@@ -473,6 +485,24 @@ int CodeInput(bool typ){
 			}
 			if(ch=='h'){
 				HelpPage();
+				Refresh();
+			}
+			if(ch=='f'){
+				cout<<"please input filename:\n";
+				string s;
+				cin>>s;
+				fin.open(s);
+				fin>>CodeLenth;
+				cout<<CodeLenth<<endl;
+				char c;
+				fin.get(c);
+				for(int i=1;i<=CodeLenth;i++){
+        			CurrentCodeLine=i;
+        			if(CheckInput(1)){
+            			GoodCode[i]=1;
+        			}
+    			}
+				fin.close();
 				Refresh();
 			}
 			//-----------------------
@@ -679,7 +709,6 @@ double scounter(double x,double y){
 
 int scorecounter(){
 	system("cls");
-	ifstream fin;
 	fin.open("./source/success.txt");
 	string s;
 	while(!fin.eof()){
@@ -704,7 +733,6 @@ int scorecounter(){
 }
 
 void Initialize(){
-	ifstream fin;
 	fin.open("./source/leveldata.txt",ios::in);
 	int t=1;
 	while(!fin.eof()){
@@ -750,12 +778,12 @@ void Initialize(){
 	screen[22] =	"   |   |                                              |   |   ";
 	screen[23] =	"   *---*                                              *---*   ";
 	screen[24] =	"                                                              ";
-	robot[0]=" *---*  ";
-	robot[1]=" |   |  ";
+	robot[0]=" *---* ";
+	robot[1]=" |   | ";
 	robot[2]="[*---*]";
 	robot[3]="\\[0_0]/";
-	robot[4]="  [_] ";
-	robot[5]="  d b ";
+	robot[4]="  [_]  ";
+	robot[5]="  d b  ";
 	/*
   /*\
  /123\
@@ -870,6 +898,8 @@ int main()
 ⣿⣿⣿⣿⣿⣿⣘⣛⣋⣡⣵⣾⣿⣿⣿⢸⣿⣿⣿⣿⣿⣿⣿⢸
 ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢸⣿⣿⣿⣿⣿⣿⣿⢸
 ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢸⣿⣿⣿⣿⣿⣿⣿⢸ 
+12 12 12 12 
+48
 */
 
  
